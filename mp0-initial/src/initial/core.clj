@@ -11,6 +11,7 @@
   (list "nope!")
 )
 
+(plus 10 20)
 ; (socialist-plus 10 20 30) => 59
 ; (socialist-plus 10 20 20 10) => 58
 
