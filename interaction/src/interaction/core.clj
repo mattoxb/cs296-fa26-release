@@ -114,6 +114,7 @@
   \"The obj is adj.\" per adjective, joined with newlines.  If not, the
   result is \"There is no obj.\""
   [state object]
+
   )
 
 ;; ```
@@ -131,17 +132,23 @@
 ;; [{:objects {}} "What show?"]
 ;; ```
 
+
 ;; # Parsing
 ;;
 ;; This is mostly code from the lecture.
+
+(defn maybe-int [input]
+  (if (re-matches #"-?[0-9]+" input)
+    (parse-long input)
+    (-> input str/lower-case keyword)))
 
 (defn canonicalize
   "Given an input string, split it into words (dropping whitespace and
   punctuation), lowercase them, and return a vector.  Words made only of
   digits become numbers; everything else becomes a keyword."
   [input]
-  )
-
+  (mapv maybe-int (str/split input #"[ .\t!]+")))
+  
 ;; ```
 ;; interaction.core=> (canonicalize "The shoe is blue.")
 ;; [:the :shoe :is :blue]
@@ -173,6 +180,7 @@
   (match input-vector
     [:postinc v]        (post-increment state v)
     [:there :is :a obj] (there-is-a state obj)
+    [x :is a :plus b]   (set-plus state x a b)
     ;; add the other phrases here
     :else [state "I don't know what you mean."]))
 
